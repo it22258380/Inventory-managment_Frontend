@@ -1,4 +1,8 @@
 import { useState } from 'react'
+import Dashboard from './pages/Dashboard';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AddProduct from './pages/AddProduct';
+import ManageProducts from './pages/ManageProducts';
 
 
 function App() {
@@ -6,9 +10,16 @@ function App() {
 
   return (
     <>
-      
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/add-product" element={<AddProduct />} />
+          <Route path="/manage-products" element={<ManageProducts />} />
+          
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
 
-export default App
+export default App;
