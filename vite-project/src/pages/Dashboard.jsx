@@ -10,17 +10,17 @@ export default function Dashboard() {
   const [categoryData, setCategoryData] = useState([]);
 
   useEffect(() => {
-    // Fetch availability overview
+    // Fetch availability 
     fetch("http://localhost:5000/api/products/feat/availability")
       .then((res) => res.json())
       .then((data) => setAvailability(data));
 
-    // Fetch low stock products
+    // Fetch low stock
     fetch("http://localhost:5000/api/products/feat/low-stock")
       .then((res) => res.json())
       .then((data) => setLowStock(data));
 
-    // Fetch category-wise data
+    // Fetch category-wise data for graph
     fetch("http://localhost:5000/api/products/feat/category-graph")
       .then((res) => res.json())
       .then((data) => setCategoryData(data));
@@ -34,7 +34,7 @@ export default function Dashboard() {
   style={{ backgroundImage: `url(${dash})`, backgroundSize: "cover", backgroundPosition: "center" }}
 >
     <Header />
-   
+   {/*graph*/}
     <div className="bg-white p-4 shadow rounded-lg mt-5">
   <h2 className="text-lg font-bold mb-4">Stock Distribution by Category</h2>
 <div className="w-full h-80 mt-4">
@@ -53,7 +53,7 @@ export default function Dashboard() {
 </div>
     <div className="flex justify-center gap-6 mt-6">
 
-      {/* Availability Overview */}
+      {/* Availability  */}
 <div className="bg-white p-2 shadow rounded-lg inline-block">
   <h2 className="text-lg font-bold mb-4">Product Availability Overview</h2>
 
@@ -78,7 +78,7 @@ export default function Dashboard() {
 </div>
 
 
-      {/* Low Stock Alerts */}
+      {/* Low Stock  */}
 <div className="bg-white p-2 shadow rounded-lg inline-block">
   <h2 className="text-lg font-bold mb-4 text-red-600">⚠️ Low Stock Alerts</h2>
   {lowStock.length > 0 ? (
