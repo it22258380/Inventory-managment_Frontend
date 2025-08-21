@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
+import {Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid,ResponsiveContainer  } from "recharts";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import dash from '../assets/dash.avif';
 
 export default function Dashboard() {
   const [availability, setAvailability] = useState([]);
@@ -15,12 +16,12 @@ export default function Dashboard() {
       .then((data) => setAvailability(data));
 
     // Fetch low stock products
-    fetch("http://localhost:5000/api/products/feat//low-stock")
+    fetch("http://localhost:5000/api/products/feat/low-stock")
       .then((res) => res.json())
       .then((data) => setLowStock(data));
 
     // Fetch category-wise data
-    fetch("http://localhost:5000/api/products/feat/category-distribution")
+    fetch("http://localhost:5000/api/products/feat/category-graph")
       .then((res) => res.json())
       .then((data) => setCategoryData(data));
   }, []);
@@ -28,74 +29,82 @@ export default function Dashboard() {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
-  <div>
+  <div 
+  className="min-h-screen flex flex-col" 
+  style={{ backgroundImage: `url(${dash})`, backgroundSize: "cover", backgroundPosition: "center" }}
+>
     <Header />
-    <div className="p-6 space-y-8">
+   
+    <div className="bg-white p-4 shadow rounded-lg mt-5">
+  <h2 className="text-lg font-bold mb-4">Stock Distribution by Category</h2>
+<div className="w-full h-80 mt-4">
+  <ResponsiveContainer width="100%" height="100%">
+    <BarChart data={categoryData}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="category" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="count" fill="#82ca9d" />
+    </BarChart>
+  </ResponsiveContainer>
+</div>
+
+</div>
+    <div className="flex justify-center gap-6 mt-6">
+
       {/* Availability Overview */}
-      <div className="bg-white p-4 shadow rounded-lg">
-        <h2 className="text-lg font-bold mb-4">Product Availability Overview</h2>
-        <ul>
-          {availability.map((cat, idx) => (
-            <li key={idx} className="flex justify-between border-b py-2">
-              <span className="font-medium">{cat.category}</span>
-              <span>✅ {cat.available} | ❌ {cat.outOfStock}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+<div className="bg-white p-2 shadow rounded-lg inline-block">
+  <h2 className="text-lg font-bold mb-4">Product Availability Overview</h2>
+
+  <table className="w-20 border-collapse">
+    <thead>
+      <tr className="bg-gray-100 text-left">
+        <th className="px-4 py-2 border">Category</th>
+        <th className="px-4 py-2 border">Available</th>
+        <th className="px-4 py-2 border">Out of Stock</th>
+      </tr>
+    </thead>
+    <tbody>
+      {availability.map((cat, idx) => (
+        <tr key={idx} className="hover:bg-gray-50">
+          <td className="px-4 py-2 border font-medium">{cat.category}</td>
+          <td className="px-4 py-2 border text-green-600">✅ {cat.available}</td>
+          <td className="px-4 py-2 border text-red-600">❌ {cat.outOfStock}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
 
       {/* Low Stock Alerts */}
-      <div className="bg-white p-4 shadow rounded-lg">
-        <h2 className="text-lg font-bold mb-4 text-red-600">⚠️ Low Stock Alerts</h2>
-        {lowStock.length > 0 ? (
-          <ul>
-            {lowStock.map((p, idx) => (
-              <li key={idx} className="flex justify-between text-red-500 font-medium py-1">
-                {p.name} <span>({p.quantity} left)</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-gray-500">No low stock items 🎉</p>
-        )}
-      </div>
+<div className="bg-white p-2 shadow rounded-lg inline-block">
+  <h2 className="text-lg font-bold mb-4 text-red-600">⚠️ Low Stock Alerts</h2>
+  {lowStock.length > 0 ? (
+    <table className="w-20 border-collapse">
+      <thead>
+        <tr className="bg-gray-100 text-left">
+          <th className="px-4 py-2 border">Product</th>
+          <th className="px-4 py-2 border">Quantity Left</th>
+        </tr>
+      </thead>
+      <tbody>
+        {lowStock.map((p, idx) => (
+          <tr key={idx} className="hover:bg-gray-50">
+            <td className="px-4 py-2 border font-medium text-red-500">{p.name}</td>
+            <td className="px-4 py-2 border text-red-600 font-semibold">{p.quantity}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p className="text-gray-500">No low stock items 🎉</p>
+  )}
+</div>
 
-      {/* Category-wise Chart */}
-      <div className="bg-white p-4 shadow rounded-lg">
-        <h2 className="text-lg font-bold mb-4">Stock Distribution by Category</h2>
 
-        <div className="flex gap-8">
-          {/* Pie Chart */}
-          <PieChart width={300} height={300}>
-            <Pie
-              data={categoryData}
-              dataKey="count"
-              nameKey="category"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label
-            >
-              {categoryData.map((_, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-
-          {/* Bar Chart */}
-          <BarChart width={400} height={300} data={categoryData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="category" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#82ca9d" />
-          </BarChart>
-        </div>
-      </div>
+      
     </div>
     <Footer />
     </div>
