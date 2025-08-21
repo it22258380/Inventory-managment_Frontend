@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import bg from '../assets/bg.jpg';
 
 function AddProduct() {
   const [name, setName] = useState('');
@@ -65,10 +66,12 @@ function AddProduct() {
     setCategory('');
     setDescription('');
     setQuantity('');
-    navigate('/admin/products/manage');
+    navigate('/manage-products');
   };
   return (
-    <div className="w-full min-h-screen flex justify-center items-center bg-gray-100 px-4 py-10">
+    <div>
+      <img src={bg} alt="Background" className="absolute inset-0 w-full h-full object-cover z-[-1]" />
+    <div className=" flex justify-center items-center px-4 py-10">
       <div className="w-full max-w-md bg-white p-8 shadow-xl rounded-lg">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Add New Product</h2>
 
@@ -141,6 +144,7 @@ function AddProduct() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }

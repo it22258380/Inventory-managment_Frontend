@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function ManageProducts() {
   const [products, setProducts] = useState([]);
@@ -74,6 +76,8 @@ function ManageProducts() {
   };
 
   return (
+    <div>
+      <Header />
     <div className="p-6 w-full min-h-screen bg-gray-50">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Manage Products</h1>
@@ -92,6 +96,7 @@ function ManageProducts() {
               <th className="py-2 px-4 border-b">Brand</th>
               <th className="py-2 px-4 border-b">Category</th>
               <th className="py-2 px-4 border-b">Quantity</th>
+              <th className="py-2 px-4 border-b">Description</th>
               <th className="py-2 px-4 border-b">Actions</th>
             </tr>
           </thead>
@@ -102,6 +107,7 @@ function ManageProducts() {
                 <td className="py-2 px-4 border-b">{prod.brand}</td>
                 <td className="py-2 px-4 border-b">{prod.category}</td>
                 <td className="py-2 px-4 border-b">{prod.quantity}</td>
+                <td className="py-2 px-4 border-b">{prod.description}</td>
                 <td className="py-2 px-4 border-b space-x-2">
                   <button
                     className="bg-black text-white px-3 py-1 rounded hover:bg-blue-500/90"
@@ -232,6 +238,8 @@ function ManageProducts() {
           </div>
         </div>
       )}
+    </div>
+    <Footer />
     </div>
   );
 }
