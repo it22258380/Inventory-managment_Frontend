@@ -35,19 +35,20 @@ export default function Dashboard() {
 >
     <Header />
    {/*graph*/}
-    <div className="bg-white p-4 shadow rounded-lg mt-5">
+    <div className="bg-white p-4 shadow rounded-lg mt-3 w-100 mx-auto ">
   <h2 className="text-lg font-bold mb-4">Stock Distribution by Category</h2>
-<div className="w-full h-80 mt-4">
+<div className="w-80 h-80 mt-4">
   <ResponsiveContainer width="100%" height="100%">
-    <BarChart data={categoryData}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="category" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="count" fill="#82ca9d" />
-    </BarChart>
-  </ResponsiveContainer>
+  <BarChart data={categoryData}>
+    <CartesianGrid strokeDasharray="1 1" />
+    <XAxis dataKey="category" />
+    <YAxis />
+    <Tooltip />
+    <Legend />
+    <Bar dataKey="count" fill="#82ca9d" barSize={30} />
+  </BarChart>
+</ResponsiveContainer>
+
 </div>
 
 </div>
